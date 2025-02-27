@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/sirupsen/logrus"
-
 	"github.com/yaakovlew/gigachat-sdk/certificates"
+	
+	log "github.com/sirupsen/logrus"
 )
 
 type gigaChatAccessToken struct {
