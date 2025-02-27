@@ -1,4 +1,4 @@
-package config
+package sdk
 
 type GigaChatConfig struct {
 	Model       string

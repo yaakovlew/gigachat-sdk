@@ -10,20 +10,19 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yaakovlew/gigachat-sdk/certificates"
-	"github.com/yaakovlew/gigachat-sdk/config"
-
 	log "github.com/sirupsen/logrus"
+
+	"github.com/yaakovlew/gigachat-sdk/certificates"
 )
 
 type gigaChatAccessToken struct {
 	mu sync.RWMutex
 
-	model       string
-	url         string
-	baseToken   string
-	clientToken string
-	scopeValue  string
+	modelVersion string
+	url          string
+	baseToken    string
+	clientToken  string
+	scopeValue   string
 
 	gigaToken jwtToken
 
@@ -35,13 +34,13 @@ type jwtToken struct {
 	expiresAt   int64
 }
 
-func newGigaChatToken(cfg config.GigaChatConfig, cert certificates.Certificate) *gigaChatAccessToken {
+func newGigaChatToken(cfg GigaChatConfig, cert certificates.Certificate) *gigaChatAccessToken {
 	token := &gigaChatAccessToken{
-		model:       cfg.Model,
-		baseToken:   cfg.BaseToken,
-		url:         cfg.AuthUrl,
-		clientToken: cfg.ClientToken,
-		scopeValue:  cfg.Scope,
+		modelVersion: cfg.Model,
+		baseToken:    cfg.BaseToken,
+		url:          cfg.AuthUrl,
+		clientToken:  cfg.ClientToken,
+		scopeValue:   cfg.Scope,
 
 		cert: cert,
 	}
@@ -139,9 +138,9 @@ func (token *gigaChatAccessToken) refresh() {
 	}
 }
 
-func (token *gigaChatAccessToken) Model() string {
+func (token *gigaChatAccessToken) model() string {
 	token.mu.RLock()
 	defer token.mu.RUnlock()
 
-	return token.model
+	return token.modelVersion
 }

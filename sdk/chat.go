@@ -9,7 +9,6 @@ import (
 	"sync/atomic"
 
 	"github.com/yaakovlew/gigachat-sdk/certificates"
-	"github.com/yaakovlew/gigachat-sdk/config"
 )
 
 type GigaChatApi struct {
@@ -21,7 +20,7 @@ type GigaChatApi struct {
 	statusCode atomic.Int32
 }
 
-func NewGigaChatApi(cfg config.GigaChatConfig, cert certificates.Certificate) *GigaChatApi {
+func NewGigaChatApi(cfg GigaChatConfig, cert certificates.Certificate) *GigaChatApi {
 	chat := &GigaChatApi{
 		cert:   cert,
 		apiUrl: cfg.ApiHost,
@@ -33,7 +32,7 @@ func NewGigaChatApi(cfg config.GigaChatConfig, cert certificates.Certificate) *G
 
 func (api *GigaChatApi) Send(messages []Message) (Response, int, error) {
 	payload := RequestPayload{
-		Model:             api.token.Model(),
+		Model:             api.token.model(),
 		Messages:          messages,
 		Stream:            false,
 		RepetitionPenalty: 1,
