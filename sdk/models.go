@@ -1,4 +1,4 @@
-package gigachat
+package sdk
 
 type Response struct {
 	Choices []Choice `json:"choices"`
