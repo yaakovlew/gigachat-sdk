@@ -10,11 +10,10 @@ import (
 
 	"github.com/yaakovlew/gigachat-sdk/certificates"
 	"github.com/yaakovlew/gigachat-sdk/config"
-	accesstoken "github.com/yaakovlew/gigachat-sdk/sdk/access_token"
 )
 
 type GigaChatApi struct {
-	token *accesstoken.GigaChatAccessToken
+	token *gigaChatAccessToken
 	cert  certificates.Certificate
 
 	apiUrl string
@@ -26,7 +25,7 @@ func NewGigaChatApi(cfg config.GigaChatConfig, cert certificates.Certificate) *G
 	chat := &GigaChatApi{
 		cert:   cert,
 		apiUrl: cfg.ApiHost,
-		token:  accesstoken.NewGigaChatToken(cfg, cert),
+		token:  newGigaChatToken(cfg, cert),
 	}
 
 	return chat
@@ -52,7 +51,7 @@ func (api *GigaChatApi) Send(messages []Message) (Response, int, error) {
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", api.token.JwtToken()))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", api.token.jwtToken()))
 
 	resp, err := api.cert.HttpClient().Do(req)
 	if err != nil {
