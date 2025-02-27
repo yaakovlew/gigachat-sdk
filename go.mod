@@ -1,4 +1,4 @@
-module github.com/yaakovlew/gigachat_sdk
+module github.com/yaakovlew/gigachat-sdk
 
 go 1.22.5
 

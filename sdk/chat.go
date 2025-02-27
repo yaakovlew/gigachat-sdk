@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"sync/atomic"
 
-	"gigachat_sdk/certificates"
-	"gigachat_sdk/config"
-	accesstoken "gigachat_sdk/sdk/access_token"
+	"github.com/yaakovlew/gigachat-sdk/certificates"
+	"github.com/yaakovlew/gigachat-sdk/config"
+	accesstoken "github.com/yaakovlew/gigachat-sdk/sdk/access_token"
 )
 
 type GigaChatApi struct {
