@@ -15,11 +15,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const (
+	authUrl = "https://ngw.devices.sberbank.ru:9443/api/v2/oauth"
+)
+
 type gigaChatAccessToken struct {
 	mu sync.RWMutex
 
 	modelVersion string
-	url          string
 	baseToken    string
 	clientToken  string
 	scopeValue   string
@@ -38,7 +41,6 @@ func newGigaChatToken(cfg GigaChatConfig, cert certificates.Certificate) *gigaCh
 	token := &gigaChatAccessToken{
 		modelVersion: cfg.Model,
 		baseToken:    cfg.BaseToken,
-		url:          cfg.AuthUrl,
 		clientToken:  cfg.ClientToken,
 		scopeValue:   cfg.Scope,
 
@@ -59,7 +61,7 @@ func (token *gigaChatAccessToken) updateJWT() error {
 	data := url.Values{}
 	data.Set("scope", token.scopeValue)
 
-	req, err := http.NewRequest("POST", token.url, bytes.NewBufferString(data.Encode()))
+	req, err := http.NewRequest("POST", authUrl, bytes.NewBufferString(data.Encode()))
 	if err != nil {
 		return err
 	}

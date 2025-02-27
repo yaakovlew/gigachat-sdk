@@ -11,20 +11,21 @@ import (
 	"github.com/yaakovlew/gigachat-sdk/certificates"
 )
 
+const (
+	apiUrl = "https://gigachat.devices.sberbank.ru/api/v1/chat/completions"
+)
+
 type GigaChatApi struct {
 	token *gigaChatAccessToken
 	cert  certificates.Certificate
-
-	apiUrl string
 
 	statusCode atomic.Int32
 }
 
 func NewGigaChatApi(cfg GigaChatConfig, cert certificates.Certificate) *GigaChatApi {
 	chat := &GigaChatApi{
-		cert:   cert,
-		apiUrl: cfg.ApiHost,
-		token:  newGigaChatToken(cfg, cert),
+		cert:  cert,
+		token: newGigaChatToken(cfg, cert),
 	}
 
 	return chat
@@ -43,7 +44,7 @@ func (api *GigaChatApi) Send(messages []Message) (Response, int, error) {
 		return Response{}, 0, err
 	}
 
-	req, err := http.NewRequest("POST", api.apiUrl, bytes.NewBuffer(payloadBytes))
+	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(payloadBytes))
 	if err != nil {
 		return Response{}, 0, err
 	}

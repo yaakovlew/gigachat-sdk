@@ -5,7 +5,4 @@ type GigaChatConfig struct {
 	BaseToken   string
 	ClientToken string
 	Scope       string
-
-	ApiHost string
-	AuthUrl string
 }
