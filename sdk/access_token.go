@@ -1,4 +1,4 @@
-package accesstoken
+package sdk
 
 import (
 	"bytes"
@@ -10,13 +10,13 @@ import (
 	"sync"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/yaakovlew/gigachat-sdk/certificates"
 	"github.com/yaakovlew/gigachat-sdk/config"
-
-	log "github.com/sirupsen/logrus"
 )
 
-type GigaChatAccessToken struct {
+type gigaChatAccessToken struct {
 	mu sync.RWMutex
 
 	model       string
@@ -35,8 +35,8 @@ type jwtToken struct {
 	expiresAt   int64
 }
 
-func NewGigaChatToken(cfg config.GigaChatConfig, cert certificates.Certificate) *GigaChatAccessToken {
-	token := &GigaChatAccessToken{
+func newGigaChatToken(cfg config.GigaChatConfig, cert certificates.Certificate) *gigaChatAccessToken {
+	token := &gigaChatAccessToken{
 		model:       cfg.Model,
 		baseToken:   cfg.BaseToken,
 		url:         cfg.AuthUrl,
@@ -47,7 +47,7 @@ func NewGigaChatToken(cfg config.GigaChatConfig, cert certificates.Certificate) 
 	}
 
 	if err := token.updateJWT(); err != nil {
-		log.Fatal(err)
+		log.Errorf("failed upadte jwt-token err:%v", err)
 	}
 
 	go token.refresh()
@@ -55,7 +55,7 @@ func NewGigaChatToken(cfg config.GigaChatConfig, cert certificates.Certificate) 
 	return token
 }
 
-func (token *GigaChatAccessToken) updateJWT() error {
+func (token *gigaChatAccessToken) updateJWT() error {
 	// For phys face
 	data := url.Values{}
 	data.Set("scope", token.scopeValue)
@@ -105,26 +105,26 @@ func (token *GigaChatAccessToken) updateJWT() error {
 	return err
 }
 
-func (token *GigaChatAccessToken) JwtToken() string {
+func (token *gigaChatAccessToken) jwtToken() string {
 	token.mu.RLock()
 	defer token.mu.RUnlock()
 
 	return token.gigaToken.accessToken
 }
 
-func (token *GigaChatAccessToken) ExpiresJWTTime() int64 {
+func (token *gigaChatAccessToken) expiresJWTTime() int64 {
 	token.mu.RLock()
 	defer token.mu.RUnlock()
 
 	return token.gigaToken.expiresAt
 }
 
-func (token *GigaChatAccessToken) refresh() {
+func (token *gigaChatAccessToken) refresh() {
 	ticker := time.NewTicker(time.Millisecond)
 
 	for range ticker.C {
 		if err := token.updateJWT(); err != nil {
-			log.Error(err)
+			log.Errorf("failed refresh jwt-token err:%v", err)
 			continue
 		}
 
@@ -139,7 +139,7 @@ func (token *GigaChatAccessToken) refresh() {
 	}
 }
 
-func (token *GigaChatAccessToken) Model() string {
+func (token *gigaChatAccessToken) Model() string {
 	token.mu.RLock()
 	defer token.mu.RUnlock()
 

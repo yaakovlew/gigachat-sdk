@@ -1,4 +1,4 @@
-package gigachat
+package sdk
 
 import (
 	"bytes"
