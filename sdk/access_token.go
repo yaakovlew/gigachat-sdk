@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yaakovlew/gigachat-sdk/certificates"
-	
 	log "github.com/sirupsen/logrus"
+
+	"github.com/yaakovlew/gigachat-sdk/certificates"
 )
 
 type gigaChatAccessToken struct {
@@ -119,7 +119,7 @@ func (token *gigaChatAccessToken) expiresJWTTime() int64 {
 }
 
 func (token *gigaChatAccessToken) refresh() {
-	ticker := time.NewTicker(time.Millisecond)
+	ticker := time.NewTicker(time.Second * time.Duration(time.Unix((token.gigaToken.expiresAt/1000-30), 0).Sub(time.Now()).Seconds()))
 
 	for range ticker.C {
 		if err := token.updateJWT(); err != nil {
