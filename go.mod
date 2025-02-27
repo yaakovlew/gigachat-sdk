@@ -1,4 +1,4 @@
-module gigachat_sdk
+module github.com/yaakovlew/gigachat_sdk
 
 go 1.22.5
 
