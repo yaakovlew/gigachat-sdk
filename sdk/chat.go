@@ -70,6 +70,8 @@ func (api *GigaChatApi) Send(messages []Message) (Response, int, error) {
 		return Response{}, resp.StatusCode, err
 	}
 
+	fmt.Println(string(body))
+
 	var response Response
 	if err := json.Unmarshal(body, &response); err != nil {
 		return Response{}, resp.StatusCode, err
@@ -79,7 +81,7 @@ func (api *GigaChatApi) Send(messages []Message) (Response, int, error) {
 		return Response{}, resp.StatusCode, fmt.Errorf("not valid response")
 	}
 
-	return Response{}, resp.StatusCode, nil
+	return response, resp.StatusCode, nil
 }
 
 func (api *GigaChatApi) LastStatusCode() int {

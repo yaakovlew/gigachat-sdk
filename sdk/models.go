@@ -5,6 +5,7 @@ type Response struct {
 	Created int64    `json:"created"`
 	Model   string   `json:"model"`
 	Object  string   `json:"object"`
+	Usage   Usage    `json:"usage"`
 }
 
 type Choice struct {
@@ -23,4 +24,11 @@ type RequestPayload struct {
 	Messages          []Message `json:"messages"`
 	Stream            bool      `json:"stream"`
 	RepetitionPenalty float64   `json:"repetition_penalty"`
+}
+
+type Usage struct {
+	PromptTokens          int `json:"prompt_tokens"`
+	CompletionTokens      int `json:"completion_tokens"`
+	TotalTokens           int `json:"total_tokens"`
+	PrecachedPromptTokens int `json:"precached_prompt_tokens"`
 }
