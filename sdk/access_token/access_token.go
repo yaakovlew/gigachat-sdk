@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yaakovlew/gigachat_sdk/certificates"
-	"github.com/yaakovlew/gigachat_sdk/config"
+	"github.com/yaakovlew/gigachat-sdk/certificates"
+	"github.com/yaakovlew/gigachat-sdk/config"
 
 	log "github.com/sirupsen/logrus"
 )
